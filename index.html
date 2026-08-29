@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ryan Hance&rsquo;s Interactive Experience Page</title>
+<meta name="description" content="Ryan Hance &mdash; leadership and digital enablement experience.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
+<style>
+/* Northeastern brand: NU Red #C8102E · Black #000000 · White #FFFFFF
+   NU Canvas #F6F6F4 · NU Cool Black #1E2028 · Bold Gold #A4804A · Light Gold #C8A978
+   Type: FF Real Head Pro is primary; Lato is the sanctioned open-source alternative. */
+:root{
+  --black:#000000; --ink:#1E2028; --canvas:#F6F6F4; --red:#C8102E;
+  --gold:#C8A978; --gold-deep:#A4804A;
+  --t1:var(--canvas); --t2:rgba(246,246,244,.74); --t3:rgba(246,246,244,.54);
+  --rule:rgba(246,246,244,.10); --rule-2:rgba(246,246,244,.18);
+  --pad:30px; --maxw:1180px;
+  --font:'Lato','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--black);color:var(--t1);font-family:var(--font);
+  font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.is-locked{overflow:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(22px,6vw,88px)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+
+/* masthead */
+.masthead{position:relative;padding:clamp(70px,10vw,132px) 0 0}
+.masthead::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+h1{font-weight:900;letter-spacing:-.028em;font-size:clamp(1.9rem,4.4vw,3.15rem);
+  line-height:1.06;margin:0 0 24px}
+.lede{font-size:clamp(1.0625rem,1.5vw,1.1875rem);line-height:1.62;color:var(--t2);
+  max-width:60ch;margin:0 0 28px;font-weight:400}
+.hint{font-size:.875rem;color:var(--t3);margin:0;font-weight:400}
+
+/* sticky lane header — translucent, darkest at top */
+.lanes-head{position:sticky;top:0;z-index:40;padding:clamp(52px,7vw,96px) 0 32px;
+  background:linear-gradient(to bottom,var(--black) 0%,rgba(0,0,0,.94) 42%,rgba(0,0,0,.72) 70%,rgba(0,0,0,0) 100%)}
+.lane-h{font-size:clamp(1.15rem,1.75vw,1.4rem);font-weight:900;letter-spacing:-.018em;
+  color:var(--t1);text-align:center;margin:0;padding:0 var(--pad)}
+
+/* capability band — chips flush with the card edges below */
+.ctx{margin-top:30px;text-align:center}
+.ctx-toggle{display:inline-flex;align-items:center;gap:11px;padding:11px 21px;border-radius:999px;
+  background:transparent;border:1px solid rgba(246,246,244,.26);color:var(--t1);
+  font:inherit;font-size:.8125rem;font-weight:700;letter-spacing:.04em;cursor:pointer;
+  transition:border-color .18s ease,background .18s ease}
+.ctx-toggle:hover{border-color:var(--red);background:rgba(200,16,46,.12)}
+.ctx-toggle::after{content:"";width:7px;height:7px;flex:none;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translate(-1px,-1px);transition:transform .2s ease}
+.ctx-toggle[aria-expanded="true"]::after{transform:rotate(225deg) translate(-1px,-1px)}
+.band{padding-bottom:clamp(48px,6.5vw,92px)}
+.band[hidden]{display:none}
+.cap-col{display:flex;flex-direction:column;gap:10px}
+.cap-col.l{padding-right:9px}
+.cap-col.r{padding-left:9px}
+.cap{width:100%;text-align:center;color:inherit;font:inherit;cursor:pointer;
+  background-color:var(--ink);border:1px solid var(--rule);border-radius:12px;padding:17px 18px 18px;display:block;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.cap:hover,.cap[aria-expanded="true"]{border-color:var(--red);transform:translateY(-1px)}
+.cap-col.l .cap{background-image:linear-gradient(90deg,rgba(0,0,0,0) 22%,rgba(0,0,0,.82) 100%)}
+.cap-col.r .cap{background-image:linear-gradient(90deg,rgba(200,16,46,.30) 0%,rgba(200,16,46,0) 78%)}
+.cap-t{display:block;font-size:1.0625rem;font-weight:700;letter-spacing:-.012em;line-height:1.32}
+.cap-y{display:block;font-size:.78125rem;color:var(--gold);font-style:italic;margin-top:3px;font-weight:400}
+
+/* role cards */
+.timeline{padding-bottom:clamp(64px,9vw,140px)}
+.card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;padding:0;
+  text-align:left;color:inherit;font:inherit;cursor:pointer;
+  background-color:var(--ink);
+  background-image:linear-gradient(90deg,
+    rgba(0,0,0,0) 0%,rgba(0,0,0,.28) 26%,rgba(0,0,0,.86) 49.6%,
+    rgba(200,16,46,.30) 50.4%,rgba(200,16,46,.10) 76%,rgba(200,16,46,0) 100%);
+  border:1px solid var(--rule);border-radius:14px;overflow:hidden;
+  margin-bottom:clamp(16px,2vw,26px);
+  transition:border-color .18s ease,box-shadow .18s ease}
+
+
+.lane{padding:30px var(--pad) 26px}
+.lane.l{padding-right:26px}
+.lane.r{padding-left:26px}
+.lane-t{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:15px}
+.items li{position:relative;padding-left:19px;font-size:.96875rem;line-height:1.62;color:var(--t2)}
+.items>li::before{content:"";position:absolute;left:1px;top:.68em;width:5px;height:5px;border-radius:50%}
+.lane.l .items>li::before{background:var(--gold-deep)}
+.lane.r .items>li::before{background:var(--red)}
+
+.foot{grid-column:1/-1;background:var(--red);display:block;
+  padding:17px var(--pad) 18px;margin-top:8px}
+.foot-co{display:block;font-size:1.0625rem;font-weight:900;letter-spacing:-.014em;
+  line-height:1.25;color:#FFFFFF}
+.foot-ti{display:block;font-size:.8125rem;font-weight:400;line-height:1.4;
+  color:rgba(255,255,255,.94);margin-top:1px}
+.foot-prev{font-style:italic;color:rgba(255,255,255,.95)}
+
+/* detail panel */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.78);opacity:0;pointer-events:none;
+  transition:opacity .22s ease;z-index:80}
+.scrim.on{opacity:1;pointer-events:auto}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);z-index:90;background:var(--black);
+  border-left:1px solid var(--rule-2);transform:translateX(101%);
+  transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
+  box-shadow:-30px 0 70px rgba(0,0,0,.6)}
+.panel.on{transform:none}
+.p-top{position:relative;flex:none;padding:34px clamp(24px,4vw,40px) 26px;background:var(--ink)}
+.p-top::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--red)}
+.p-kicker{font-size:.6875rem;letter-spacing:.17em;text-transform:uppercase;font-weight:700;
+  color:var(--gold);margin:0 0 13px}
+#p-title{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:900;letter-spacing:-.025em;
+  line-height:1.16;margin:0 0 9px;padding-right:50px}
+.p-sub{font-size:.9375rem;font-weight:700;color:var(--t1);margin:0 0 6px;line-height:1.45}
+.p-sub:empty,.p-dt:empty,.p-kicker:empty{display:none}
+.p-dt{font-size:.75rem;letter-spacing:.11em;text-transform:uppercase;color:var(--t3);font-weight:700;margin:0}
+.p-close{position:absolute;top:30px;right:clamp(18px,3vw,30px);width:38px;height:38px;border-radius:10px;
+  cursor:pointer;background:transparent;border:1px solid var(--rule-2);color:var(--t2);
+  font-size:22px;line-height:1;display:grid;place-items:center;padding:0;
+  transition:background .16s ease,color .16s ease,border-color .16s ease}
+.p-close:hover{background:var(--red);color:#FFFFFF;border-color:var(--red)}
+.p-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:30px clamp(24px,4vw,40px) 70px}
+.p-intro{font-size:1rem;line-height:1.68;color:var(--t2);margin:0 0 30px}
+.p-years{font-size:.875rem;font-style:italic;color:var(--gold);margin:0 0 18px}
+.p-prev{font-size:.875rem;color:var(--t3);margin:0 0 30px;padding:15px 17px;background:var(--ink);
+  border-radius:10px;line-height:1.55}
+.p-prev b{color:var(--t2);font-weight:700;display:block;margin-bottom:5px;font-size:.6875rem;
+  letter-spacing:.13em;text-transform:uppercase}
+.p-sec{margin:0 0 36px}
+.p-sec:last-child{margin-bottom:0}
+.p-sec h3{font-size:1.0625rem;font-weight:900;letter-spacing:-.015em;color:var(--t1);
+  margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid var(--rule-2)}
+.p-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:17px}
+.p-list>li{position:relative;padding-left:20px;font-size:1rem;line-height:1.6;color:var(--t1)}
+.p-list>li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;
+  border-radius:50%;background:var(--red)}
+.p-kids{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.p-kids li{position:relative;padding-left:18px;font-size:.9375rem;line-height:1.55;color:var(--t2)}
+.p-kids li::before{content:"";position:absolute;left:0;top:.68em;width:5px;height:5px;
+  border-radius:50%;background:var(--gold-deep)}
+.p-links{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
+.p-links a{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:15px 17px;
+  border:1px solid var(--rule);border-radius:10px;background:var(--ink);text-decoration:none;
+  font-size:.9375rem;font-weight:700;line-height:1.4;transition:border-color .16s ease}
+.p-links a:hover{border-color:var(--red)}
+.p-links a::after{content:"";flex:none;width:7px;height:7px;align-self:center;
+  border-right:1.5px solid var(--t3);border-top:1.5px solid var(--t3);
+  transform:rotate(45deg);transition:border-color .16s ease,transform .16s ease}
+.p-links a:hover::after{border-color:var(--gold);transform:rotate(45deg) translate(1px,-1px)}
+
+/* responsive */
+@media (max-width:900px){
+  :root{--pad:22px}
+  .lanes-head{display:none}
+  .grid{display:block}
+  .cap-col.l,.cap-col.r{padding:0}
+  .cap-col+.cap-col{margin-top:10px}
+  .cap{text-align:left}
+  .card{display:block;background-image:none}
+  .lane{padding:24px var(--pad) 6px}
+  .lane.l,.lane.r{padding-left:var(--pad);padding-right:var(--pad)}
+  .lane.empty{display:none}
+  .lane-t{position:static;width:auto;height:auto;margin:0 0 14px;overflow:visible;clip:auto;
+    white-space:normal;display:block;font-size:.6875rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--t3);padding-bottom:11px;border-bottom:1px solid var(--rule)}
+  .foot{margin-top:20px;padding:20px var(--pad)}
+  .ctx-toggle{width:100%;justify-content:space-between}
+  .panel{width:100%;border-left:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+html:not(.js) .cap{cursor:default}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <h1>Ryan Hance&rsquo;s Interactive Experience Page</h1>
+    <p class="lede">For the Assistant Director, Digital Enablement role at Northeastern University, focused primarily on relevant leadership and digital enablement experience.</p>
+    <p class="hint">Select any card for detail.</p>
+    <p class="ctx"><button class="ctx-toggle" id="ctx-toggle" type="button" aria-expanded="false" aria-controls="band">Show Career Through Lines</button></p>
+  </div>
+</header>
+
+<div class="lanes-head" aria-hidden="true">
+  <div class="wrap">
+    <div class="grid">
+      <p class="lane-h">Leadership + Building a Team:</p>
+      <p class="lane-h">Digital Enablement:</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="band" id="band" hidden aria-labelledby="band-h">
+    <h2 id="band-h" class="sr">Capabilities that run across multiple roles</h2>
+    <div class="grid">
+      <div class="cap-col l">
+        <button class="cap" type="button" data-cap="left:0" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Cross-Functional Leadership</span><span class="cap-y">13+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:1" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Hiring Experience</span><span class="cap-y">13+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:2" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Change Management</span><span class="cap-y">12+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:3" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Talent Development</span><span class="cap-y">10+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:4" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Team Retention</span><span class="cap-y">10+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:5" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Executive Alignment</span><span class="cap-y">10+ years experience</span></button>
+        <button class="cap" type="button" data-cap="left:6" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Training Program Design</span><span class="cap-y">7+ years experience</span></button>
+      </div>
+      <div class="cap-col r">
+        <button class="cap" type="button" data-cap="right:0" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Digital Technology Enablement</span><span class="cap-y">11+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:1" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Tool and AI Adoption</span><span class="cap-y">10+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:2" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Metrics Design</span><span class="cap-y">7+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:3" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">AI Tool Evaluation</span><span class="cap-y">4+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:4" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Global AI Training</span><span class="cap-y">3+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:5" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">AI Product Strategy</span><span class="cap-y">3+ years experience</span></button>
+        <button class="cap" type="button" data-cap="right:6" aria-haspopup="dialog" aria-expanded="false"><span class="cap-t">Responsible AI</span><span class="cap-y">3+ years experience</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="timeline" aria-labelledby="tl-h">
+    <h2 id="tl-h" class="sr">Roles, earliest first</h2>
+<article class="card" aria-label="AGS Consulting, AI Enablement Lead (Business Operations &amp; Transformation)">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Leading executives through custom service blueprints and decision frameworks they use to restructure teams and tech stacks.</li><li>Led a nationwide counseling franchise through restructuring across multiple states that closed, folded, and opened locations through clear understanding of the ideal intersection of franchisee and cultural impact via criteria canvases and priority matrices.</li><li>Work directly with CEOs, executive teams, and franchisors.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Currently transforming business operations through agentic experience design alongside human and AI skill development, increasing the efficiency and accuracy of leaders, teams, and individual contributors.</li><li>Building AI native, tool agnostic knowledge management systems for creative and operational teams, architected for both human and agent ease of retrieval.</li><li>Design and launch task specific agents with reusable, self-improving skill files and knowledge architecture, then upskill teams to deploy when needed.</li><li>Own transformation engagements from scoping and discovery through implementation and adoption.</li><li>Designed the business model, tech stack, and service models for multiple partnered business engagements.</li><li>Created the end-to-end service blueprint for a hospitality franchise to determine the tech stack roadmap for multi-location build outs.</li><li>Lead teams from Notion, Dropbox, and Google Drive into tool agnostic markdown systems that increases their AI usage.</li></ul></div>
+  <div class="foot"><span class="foot-co">AGS Consulting</span><span class="foot-ti">AI Enablement Lead (Business Operations &amp; Transformation)</span></div>
+</article>
+<article class="card" aria-label="Dryland Revival, Technology Enablement and Implementation Lead">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Redesigned our organizational structure to detach our CEO from daily hands-on work, allowing him to focus on higher leverage efforts in sales, design, and leadership.</li><li>Owned the operating cadences and reporting: the all hands meetings, trackers, and dashboards that all six teams ran on through a growth window that doubled revenue and quadrupled headcount year over year.</li><li>Crafted an ERAF map with over 100 interaction points to help siloed employees understand their impact on the rest of the business system.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Built a 450 data point enterprise level service blueprint that became the strategic information architecture for the executive level decision making.</li><li>Designed the automations and information architecture of our project management system.</li></ul></div>
+  <div class="foot"><span class="foot-co">Dryland Revival</span><span class="foot-ti">Technology Enablement and Implementation Lead</span></div>
+</article>
+<article class="card" aria-label="Bayer Crop Science, Sr. AI Enablement Strategist (Generative AI) — Global Commercial COE">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Developed an agentic AI experience and sold it internally through months of workshops, demos, and one on one influencing before getting the greenlight to build.</li><li>Reached thousands of internal users across business, engineering, design, and HR in 20+ languages in a single quarter.</li><li>Trained entire departments of the business from Indonesia to Brazil in a single quarter.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Authored the company&#x27;s AI Strategy Playbook and led its global dissemination, materially increasing business stakeholder adoption of the internal AI platform from 2% to 26% in two months.</li><li>Pioneered an agentic persona service across multiple company-wide platforms, enabling teams to interactively engage with models of users they couldn&#x27;t otherwise reach.</li><li>Provided strategic input on the build of the company&#x27;s internal LLM platform, impacting design and product decisions, and leading user testing.</li><li>Designed governance gates for agents to reduce failures and overstepping.</li></ul></div>
+  <div class="foot"><span class="foot-co">Bayer Crop Science</span><span class="foot-ti">Sr. AI Enablement Strategist (Generative AI) — Global Commercial COE</span></div>
+</article>
+<article class="card" aria-label="Bayer Crop Science, Sr. Design Strategist &amp; Design Thinking Facilitator — Customer and Operations Platforms">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Managed the primary customer journey inside our customer platform&#x27;s 20,000+ point global blueprint, and led a separate 2,250 point journey mapping effort across 27 teams, mapping the employee journeys of our operations platform.</li><li>Aligned 27 teams that did not report to me across North America, Europe, and Asia-Pacific.</li><li>Facilitated hundreds of design thinking workshops for diverse teams, from 5 to 150 people, maturing design thinking within the company and fostering a culture of user centered innovation.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Mapped the Farmer persona inside the global enterprise service blueprint — 20,000+ data points across five countries and hundreds of teams.</li><li>Served as UX Lead for the Farmer experience on the end-to-end customer site rebuild, spanning the pre-auth marketing, product, and agronomy surfaces and the post-auth Grower Portal.</li><li>Authored the Universal Design Principles adopted across every platform under the Head of Design for the Crop Sciences organization.</li><li>Built out and wrote all stories for a scrum board for a legacy Operations Platform product team that had no user stories or change tracking.</li></ul></div>
+  <div class="foot"><span class="foot-co">Bayer Crop Science</span><span class="foot-ti">Sr. Design Strategist &amp; Design Thinking Facilitator — Customer and Operations Platforms</span></div>
+</article>
+<article class="card" aria-label="AG Sage, Leadership Development Lead">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Developed a leadership development practice for high school and college students, reaching hundreds of young people through 1:1 programs, retreats, and cohorts.</li><li>Designed programming and educational materials across experiences and curricula.</li><li>Multiple structured multi-month social-emotional learning (SEL) and leadership programs for high school and college students.</li><li>Many custom curriculum weekend retreats in partnership with youth groups.</li><li>Led business development that allowed me to run the business for 3 years and still in the background to this day.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Custom built design-thinking-like tools for SEL based leadership.</li><li>High ticket, five figure offer that included course material, tools, and interaction cadences for 1:1 leadership coaching.</li></ul></div>
+  <div class="foot"><span class="foot-co">AG Sage</span><span class="foot-ti">Leadership Development Lead</span></div>
+</article>
+<article class="card" aria-label="Greene Family Camp, Training &amp; Development Lead">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Redesigned a decade old staff in training curriculum and program structure using Self-Determination Theory as the leadership framework.</li><li>Built individualized development plans across the staff.</li><li>Led and mentored a team of 40 counselors and CITs across two seasons.</li><li>Provided training and mentorship to program staff, fostering creativity and teaching experience design principles to the next generation of camp leaders.</li><li>Led trainings throughout the season.</li><li>Facilitated change management within the campus system.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Owned end-to-end campus operations — supply ordering, programming logistics, and daily activity flow.</li><li>Designed the day-to-day operations: the flow of activities, the materials they required, and turning the schedule into executable days.</li><li>Employed experience design principles to innovate on decades old traditions.</li></ul></div>
+  <div class="foot"><span class="foot-co">Greene Family Camp</span><span class="foot-ti">Training &amp; Development Lead <em class="foot-prev">(Program Director, Special Events Coordinator, Logistics &amp; Purchasing Director, Head Counselor)</em></span></div>
+</article>
+<article class="card" aria-label="Delta Air Lines × SCADpro, Project Manager">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Led a cross-cultural team of creatives from eight countries and nine disciplines in developing sustainable business models for the airline.</li><li>Managed budget, timelines, resources, and stakeholder relationships across the engagement.</li><li>Acted as the primary contact between client and team, presenting status updates and pitch decks regularly in corporate rooms, while communicating business needs to the creative team in the studio.</li><li>Trained creative studio team in the business model canvas and design thinking process, mapping every strategy through the canvas before client pitches.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Architected a series of prioritization frameworks using matrices, business models, criteria canvases, and other design strategy tools that anchored the team&#x27;s decision making in client adoption logic.</li><li>Owned end-to-end solution development, from establishing decision criteria through translating insights into actionable business strategies.</li></ul></div>
+  <div class="foot"><span class="foot-co">Delta Air Lines × SCADpro</span><span class="foot-ti">Project Manager</span></div>
+</article>
+<article class="card" aria-label="Campus Carriers, Service Designer">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Designed a leadership development curriculum for students across seven partner universities, combining interactive skill building with competitively paid job experience.</li><li>Owned end-to-end service development, from primary market research with residential life leaders to the educational design of the curriculum through offer design and pre-launch partnership preparations.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Architected a multi-stakeholder (B2B2C) service structure spanning parents, students, and universities.</li></ul></div>
+  <div class="foot"><span class="foot-co">Campus Carriers</span><span class="foot-ti">Service Designer</span></div>
+</article>
+<article class="card" aria-label="Campus Carriers, Operations Director">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Owned operations at the largest location of a regional university logistics startup, leading 200+ seasonal staff across six seasons.</li><li>Facilitated the seasonal staffing funnel across recruiting cycles, hiring and training 50 to 100 employees per year.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Built the operational playbook that propagated across other partner university campuses, including recruiting, onboarding, training, scheduling, inventory, and safety as ways-of-working.</li></ul></div>
+  <div class="foot"><span class="foot-co">Campus Carriers</span><span class="foot-ti">Operations Director</span></div>
+</article>
+<article class="card" aria-label="Freelance Film &amp; Television, Lead Producer &amp; Assistant Director">
+  <div class="lane l"><p class="lane-t">Leadership + Building a Team</p><ul class="items"><li>Built and led a multi-departmental production crew with ~95% project-to-project retention over six years.</li><li>Led multiple concurrent production teams through pre-production, production, and post-production across overlapping shoot windows.</li><li>Designed and led the production of a branded content short film across 30+ crew, 20+ talent, eight locations, and ten-plus external vendor partnerships.</li><li>Coordinated thousands of crew, cast, equipment, locations, resources, and vendor partners live on set, becoming the nexus for all information, decision making, and de-escalating.</li></ul></div>
+  <div class="lane r"><p class="lane-t">Digital Enablement</p><ul class="items"><li>Designed and facilitated project management system at scale, ensuring projects came in on time and on budget while our crew worked on six projects at a time on average, often peaking between ten and twelve projects at once.</li><li>Visually mapped crew, cast, and equipment positioning for hundreds of scenes across 40 projects.</li><li>Pioneered digital production management environments for cross-functional production teams, replacing paper and physical whiteboard planning with Asana, Google Drive, Dropbox, Miro, Mural, and assorted process mapping softwares.</li></ul></div>
+  <div class="foot"><span class="foot-co">Freelance Film &amp; Television</span><span class="foot-ti">Lead Producer &amp; Assistant Director</span></div>
+</article>
+  </section>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="p-title" tabindex="-1" hidden>
+  <div class="p-top">
+    <p class="p-kicker" id="p-kicker"></p>
+    <h2 id="p-title"></h2>
+    <p class="p-sub" id="p-sub"></p>
+    <p class="p-dt" id="p-dt"></p>
+    <button class="p-close" id="p-close" type="button" aria-label="Close Detail">&times;</button>
+  </div>
+  <div class="p-body" id="p-body"></div>
+</aside>
+
+<script>
+const DATA = {"caps":{"left":[{"id":"cross-functional-leadership","t":"Cross-Functional Leadership","y":"13+ years experience","b":"I have led across functions and disciplines my entire career. On film sets, every department head came to me as the hub for information, prioritization, and decision making across thousands of crew, cast, and vendors. At Delta, I led a cross-cultural team spanning eight countries and nine disciplines while owning budget, timelines, and the client relationship, presenting at corporate and translating business needs to the creative team in the studio. At Bayer, I aligned 27 teams that did not report to me across North America, Europe, and Asia-Pacific. At Dryland, all six teams ran on the operating systems I developed."},{"id":"hiring-experience","t":"Hiring Experience","y":"13+ years experience","b":"I have built and run hiring systems in three industries. In film and TV, I built and led a multi-departmental production crew with roughly 95% project to project retention across six years, identifying underutilized talent and developing them into leads through on set mentor matching. At Campus Carriers, I facilitated the seasonal staffing funnel, hiring and training 50 to 100 employees a year. At Dryland, I built the hiring funnel across three candidate markets that scaled the team from 3 to 15 in a single season and 30 to 40 hires across seasons, conducting hundreds of first round interviews and designing a paid multi-day field test that drove 100% season long retention of everyone who completed it."},{"id":"change-management","t":"Change Management","y":"12+ years experience","b":"Drove change and adoption in resistant systems my entire career: from navigating day-to-day and hour-by-hour changes on film sets to innovating decades old traditions while keeping the soul of the experience at a 1,500 person summer camp, including a decade old training program replaced with modern methods, creating a 67% year over year retention lift; a nationwide counseling franchise led through restructuring across states without a single layoff; a startup org redesign that doubled revenue and quadrupled headcount; moving a construction field crew into modern technology in the context of a phone based project management system; and leading a Fortune 500 AI platform from 2% to 26% adoption in two months."},{"id":"talent-development","t":"Talent Development","y":"10+ years experience","b":"Built individualized development plans across a 250 person camp staff, created a system for on set mentor matching in film that identified underused talent and launched them to lead their own crews, and design and facilitate leadership programming for the last eight years."},{"id":"team-retention","t":"Team Retention","y":"10+ years experience","b":"I build teams that stick around. Some stats: roughly 95% crew retention across six years in film, a 67% year-over-year retention lift at a 250 staff summer camp, and a startup hiring funnel that delivered 100% season-long retention of the individuals who moved through it."},{"id":"executive-alignment","t":"Executive Alignment","y":"10+ years experience","b":"At Bayer, I developed an agentic AI experience and sold it internally through months of workshops, demos, and one on one influencing before getting the greenlight to build. At Delta, I was the primary client contact, presenting status updates and pitch decks regularly to corporate. As a franchise consultant, I work directly with CEOs, executive teams, and franchisors. At Dryland, I was the CEO's first conversation and advisor on every major decision. The first half of my career in film was aligning clients and directors on what was actually possible within the timeline and budget."},{"id":"training-program-design","t":"Training Program Design","y":"7+ years experience","b":"Redesigned a decade old staff training program at one of the country's largest residential summer camps (1,500 people a summer) using Self-Determination Theory as the leadership framework — driving a 67% year-over-year staff retention increase. This was after developing leadership training for the internal and external stakeholders at Campus Carriers and developing leadership programming for teens and young professionals, and before my more recent efforts designing leadership training for men 20s to 40s."}],"right":[{"id":"digital-technology-enablement","t":"Digital Technology Enablement","y":"11+ years experience","b":"Moving teams into new technological eras has been a passion of mine since the beginning of my career. The film and television industry was very antiquated when I arrived, working primarily off of paper, whiteboards, and drawings. I had a vision for a more interconnected and adaptable system, so I built out digital production management environments for teams to communicate better across departments and state lines, using Asana, Google Drive, Dropbox, Miro, Mural, and process mapping software to bring cross-functional production teams into the 21st century. I continue to mirror this work at scale, building Dryland's automated end-to-end project management system in the construction industry where technology and change is rare, developing Bayer's internal AI platform, and the tool agnostic knowledge systems I build for client teams today."},{"id":"tool-and-ai-adoption","t":"Tool and AI Adoption","y":"10+ years experience","b":"Adoption is a design problem. At Bayer, I took a Fortune 500's internal AI platform from 2% to 26% adoption in two months, by treating it as a competence problem rather than a trust problem. Beyond that, I developed an agentic persona service that multiple anti-AI teams started using daily, a project management system that construction field crews actually used on their phones, the migration of Bayer's global blueprint from Miro to TheyDo that matured design thinking across the enterprise through ease of discovery for customer journey maps, and currently lead teams from Notion, Dropbox, and Google Drive into tool agnostic markdown systems that increases their AI usage. This passion started in the film industry where I led the adoption of on-set and pre-production technologies across teams and departments."},{"id":"metrics-design","t":"Metrics Design","y":"7+ years experience","b":"Masters level training in metric determination: designing the right success metrics for the situation, then measuring against them. Fluent in OKRs, KPIs, NPS, adoption rate, time to launch, and satisfaction. Decision criteria that anchored client adoption logic in my work with Delta, the Franchise Criteria Canvas and priority matrices that gave a nationwide franchise an agreed standard for franchisee decisions, the SME validation threshold that gated Bayer's agentic personas before teams were allowed to rely on them, and the performance analytics, trackers, and dashboards Dryland ran on. Regularly measuring outcomes against the vision that was set: a 35% lift in product and service opportunities, a 30% rise in workplace safety, and 2% to 26% platform adoption in two months."},{"id":"ai-tool-evaluation","t":"AI Tool Evaluation","y":"4+ years experience","b":"Regularly self train on unfamiliar enterprise software to the depth of evaluating vendor fit, proven at the Fortune 500 level and across startups. Drove a Fortune 500's Customer Data Platform vendor selection and gave strategic input on its internal LLM platform build. My goal is to identify the right tool for the right job and the right persona."},{"id":"global-ai-training","t":"Global AI Training","y":"3+ years experience","b":"Authored Bayer's AI Strategy Playbook and led its global dissemination in 20+ languages to thousands of internal users across business, engineering, design, and HR — training entire departments of the business from Indonesia to Brazil in a single quarter."},{"id":"ai-product-strategy","t":"AI Product Strategy","y":"3+ years experience","b":"Led product strategy on the build out and adoption of Bayer's internal LLM platform pre-AI-boom, impacting design and product decisions and leading user testing. I partnered in developing the platform's use cases with its beta users, with one of those use cases later measuring 23.3% average time saved and 10.7 working days saved per worker per year in the relevant area in a peer-reviewed external study. That work continues today as the core of my consulting practice. I build agentic, tool agnostic knowledge systems for creative and operational teams, design the prompt, workflow, and rule configurations they run on, and treat retrieval quality and human authored context as the leverage priority."},{"id":"responsible-ai","t":"Responsible AI","y":"3+ years experience","b":"I've been integrating AI into human systems since before commercial integrations existed — agentic personas validated by 20+ year subject-matter experts above 80% accuracy before teams were allowed to rely on them. I've also led stakeholder AI education from Indonesia to Brazil, and designed governance gates for agents to reduce failures and overstepping."}]},"chapters":[{"id":"ags","co":"AGS Consulting","ti":"AI Enablement Lead (Business Operations & Transformation)","dt":"Jan 2024 – Present","desc":"Business operations and transformation engagements across service businesses, integrating emerging technology and innovative business models into daily operations, working with franchisees and franchisors across multiple sectors (counseling, fitness, hospitality, film, education, consumer services).","left":[{"t":"Leading executives through custom service blueprints and decision frameworks they use to restructure teams and tech stacks.","k":[]},{"t":"Led a nationwide counseling franchise through restructuring across multiple states that closed, folded, and opened locations through clear understanding of the ideal intersection of franchisee and cultural impact via criteria canvases and priority matrices.","k":["Facilitated ethnographic interviews with corporate team and franchisees to create the client profile and criteria of ideal franchisees.","Designed comparative organizational charts to map the restructuring of the corporate team, as well as the franchisee team requirements to get the right people in their right positions for higher efficiency and impact without having to let anyone go.","Developed the Franchise Criteria Canvas to streamline and improve corporate decision making surrounding accepting a new franchisee.","Since the engagement, the franchise has closed 3 locations and opened 9 due to determinations made with the Franchise Criteria Canvas I developed."]},{"t":"Work directly with CEOs, executive teams, and franchisors.","k":[]}],"right":[{"t":"Currently transforming business operations through agentic experience design alongside human and AI skill development, increasing the efficiency and accuracy of leaders, teams, and individual contributors.","k":[]},{"t":"Building AI native, tool agnostic knowledge management systems for creative and operational teams, architected for both human and agent ease of retrieval.","k":[]},{"t":"Design and launch task specific agents with reusable, self-improving skill files and knowledge architecture, then upskill teams to deploy when needed.","k":[]},{"t":"Own transformation engagements from scoping and discovery through implementation and adoption.","k":[]},{"t":"Designed the business model, tech stack, and service models for multiple partnered business engagements.","k":[]},{"t":"Created the end-to-end service blueprint for a hospitality franchise to determine the tech stack roadmap for multi-location build outs.","k":[]},{"t":"Lead teams from Notion, Dropbox, and Google Drive into tool agnostic markdown systems that increases their AI usage.","k":[]}],"links":[{"label":"Full Portfolio","url":"https://www.hance.work/"}],"showDesc":true,"more":true},{"id":"dryland","co":"Dryland Revival","ti":"Technology Enablement and Implementation Lead","dt":"Jan 2022 – Feb 2025","desc":"Designed, built, and facilitated the operating system for a tech forward, full service construction science startup. Directly responsible for 2x revenue and 4x headcount year over year. Ran people operations, hiring, technology integration, playbooks, and performance analytics. Profitable exit via a sale of the business in 2025.","left":[{"t":"Redesigned our organizational structure to detach our CEO from daily hands-on work, allowing him to focus on higher leverage efforts in sales, design, and leadership.","k":["This doubled revenue and quadrupled headcount in three months.","Created roles and team structures that grew the team from 3 to 15 in a single season, ultimately hiring between 30-40 employees across multiple seasons.","Facilitated the hiring funnel across three candidate markets: marketing, sales and design, and field crew.","Conducted hundreds of first round interviews.","Designed a paid multi-day field test to evaluate and filter finalists, resulting in 100% season long retention for the employees who completed this."]},{"t":"Owned the operating cadences and reporting: the all hands meetings, trackers, and dashboards that all six teams ran on through a growth window that doubled revenue and quadrupled headcount year over year.","k":[]},{"t":"Crafted an ERAF map with over 100 interaction points to help siloed employees understand their impact on the rest of the business system.","k":["Retained a high percentage of employees who were planning to leave due to \"bad communication\" after doing ethnographic research and discovering that the problem was actually a misunderstanding of the larger business model and where financial efforts were being directed to improve both the customer and employee experience."]}],"right":[{"t":"Built a 450 data point enterprise level service blueprint that became the strategic information architecture for the executive level decision making.","k":["Developed a company wide playbook library based on uncovered interaction points, increasing efficiency by 80% and removing the CEO from unnecessary lower level decision making conversations."]},{"t":"Designed the automations and information architecture of our project management system.","k":["Built our project management system end-to-end in ClickUp before transitioning to Monday.com and rebuilding end-to-end because the mobile UX was better for our field team."]}],"links":[{"label":"Systems Flow (ERAF) Map","url":"https://www.hance.work/Systems-Flow-ERAF-Map-74cfa7e910564777a9883a55f066d4f9?pvs=25"},{"label":"Local Enterprise Service Blueprint","url":"https://www.hance.work/Local-Enterprise-Level-Service-Blueprint-74f9ecfa9f4a4873be1b909a7f5e37d8?pvs=25"}],"showDesc":true,"more":true},{"id":"bayer-ai","co":"Bayer Crop Science","ti":"Sr. AI Enablement Strategist (Generative AI) — Global Commercial COE","dt":"Mar 2023 – Dec 2023","desc":"Lead strategist for the generative AI and LLM development effort across the Global Commercial COE, the division's organization that oversees the platforms driving the bulk of Crop Science's annual revenue.","left":[{"t":"Developed an agentic AI experience and sold it internally through months of workshops, demos, and one on one influencing before getting the greenlight to build.","k":[]},{"t":"Reached thousands of internal users across business, engineering, design, and HR in 20+ languages in a single quarter.","k":[]},{"t":"Trained entire departments of the business from Indonesia to Brazil in a single quarter.","k":[]}],"right":[{"t":"Authored the company's AI Strategy Playbook and led its global dissemination, materially increasing business stakeholder adoption of the internal AI platform from 2% to 26% in two months.","k":["Developed a prompt engineering template that enabled internal stakeholders globally to leverage generative AI for the first time."]},{"t":"Pioneered an agentic persona service across multiple company-wide platforms, enabling teams to interactively engage with models of users they couldn't otherwise reach.","k":["Developed workflow to produce high fidelity representations of internal and external users in under 15 minutes validated by SMEs at above 80% accuracy.","Built before commercial AI integrations existed for the company's collaboration stack.","Led to a significant reduction in UAT failures across teams that used them.","Directly correlated with increased design maturity and user empathy across the organization."]},{"t":"Provided strategic input on the build of the company's internal LLM platform, impacting design and product decisions, and leading user testing.","k":["Developed platform use cases with beta user group ahead of company-wide launch; one use case later measured 23.3% average time saved and 10.7 working days saved per worker per year in the relevant area in a peer-reviewed external study."]},{"t":"Designed governance gates for agents to reduce failures and overstepping.","k":[]}],"links":[{"label":"Generative A.I. Playbook","url":"https://www.hance.work/Generative-A-I-Playbook-bb68ca8c80d840e5be083136a0b88f92?pvs=25"},{"label":"A.I. Persona Prototypes","url":"https://www.hance.work/A-I-Persona-Prototypes-43575337f52c4cecaf4fdd871e5aa41e?pvs=25"},{"label":"A.I. Product Roadmap","url":"https://www.hance.work/A-I-Product-Roadmap-d042f4d986e5441bbb80b5e5ea4bd018?pvs=25"},{"label":"Prompt Engineering Strategic Design","url":"https://www.hance.work/Prompt-Engineering-Strategic-Design-40891c882c00477e936743a5d0657ddc?pvs=25"}],"showDesc":true,"more":true},{"id":"bayer-ds","co":"Bayer Crop Science","ti":"Sr. Design Strategist & Design Thinking Facilitator — Customer and Operations Platforms","dt":"Jun 2022 – Oct 2023","desc":"UX Lead for the Farmer persona, the division's most important customer, inside Customer Platforms — the division's customer facing digital product organizations. As well as one of two dedicated design strategists for the Operations Platforms across hundreds of cross-functional teams.","left":[{"t":"Managed the primary customer journey inside our customer platform's 20,000+ point global blueprint, and led a separate 2,250 point journey mapping effort across 27 teams, mapping the employee journeys of our operations platform.","k":["Drove material reductions in environmental toxin risk and increases in workplace safety within two quarters."]},{"t":"Aligned 27 teams that did not report to me across North America, Europe, and Asia-Pacific.","k":[]},{"t":"Facilitated hundreds of design thinking workshops for diverse teams, from 5 to 150 people, maturing design thinking within the company and fostering a culture of user centered innovation.","k":["Was selected by Miro as Bayer's single Enterprise Advocate for the company."]}],"right":[{"t":"Mapped the Farmer persona inside the global enterprise service blueprint — 20,000+ data points across five countries and hundreds of teams.","k":["Led the migration of the global, enterprise level service blueprint from Miro to TheyDo."]},{"t":"Served as UX Lead for the Farmer experience on the end-to-end customer site rebuild, spanning the pre-auth marketing, product, and agronomy surfaces and the post-auth Grower Portal.","k":["Refined backlogs and drove product decisions by aligning hundreds of technical stories, user research discoveries, and business goals to user needs, resulting in a 35% increase in product and service opportunities across the NA and LATAM user site builds.","Led User Acceptance Testing (UAT) across NA user base.","Drove the research and strategy work that anchored the company's selection of its enterprise Customer Data Platform vendor; leadership ultimately selecting my recommendation.","Structured the team composition for integrating then enhancing user experience and business insights post-vendor selection."]},{"t":"Authored the Universal Design Principles adopted across every platform under the Head of Design for the Crop Sciences organization.","k":[]},{"t":"Built out and wrote all stories for a scrum board for a legacy Operations Platform product team that had no user stories or change tracking.","k":[]}],"links":[{"label":"Global Enterprise Service Blueprint","url":"https://www.hance.work/Global-Enterprise-Level-Service-Blueprint-cd937db4cb344b318bae4c6d1e7ca9fa?pvs=25"},{"label":"Global Journey Mapping Effort","url":"https://www.hance.work/Global-Journey-Mapping-Effort-228e643935ea43aab50ee95d8f56305f?pvs=25"},{"label":"Customer Data Platform Roadmap","url":"https://www.hance.work/Customer-Data-Platform-Roadmap-0d65a3c99943497e9c969160e33742a2?pvs=25"},{"label":"User Testing Strategic Recommendations","url":"https://www.hance.work/User-Testing-Strategic-Recommendations-9f073d6ea0bb4bd1bef08d176895dd10?pvs=25"},{"label":"Legacy Software UX Strategy","url":"https://www.hance.work/Legacy-Software-UX-Strategy-e189dab0fccc4d088f0f8e2a22b009a9?pvs=25"}],"showDesc":true,"more":true},{"id":"agsage","co":"AG Sage","ti":"Leadership Development Lead","dt":"Mar 2020 – Jun 2022","desc":"A leadership development practice for high school and college students, reaching hundreds of young people through 1:1 programs, retreats, and cohorts.","left":[{"t":"Developed a leadership development practice for high school and college students, reaching hundreds of young people through 1:1 programs, retreats, and cohorts.","k":[]},{"t":"Designed programming and educational materials across experiences and curricula.","k":[]},{"t":"Multiple structured multi-month social-emotional learning (SEL) and leadership programs for high school and college students.","k":[]},{"t":"Many custom curriculum weekend retreats in partnership with youth groups.","k":[]},{"t":"Led business development that allowed me to run the business for 3 years and still in the background to this day.","k":[]}],"right":[{"t":"Custom built design-thinking-like tools for SEL based leadership.","k":[]},{"t":"High ticket, five figure offer that included course material, tools, and interaction cadences for 1:1 leadership coaching.","k":[]}],"links":[],"showDesc":false,"more":false},{"id":"gfc","co":"Greene Family Camp","ti":"Training & Development Lead","dt":"Mar 2014 – Aug 2021","desc":"A 1,500-person residential summer camping operation, one of the largest in the country by population and acreage.","prev":"Program Director, Special Events Coordinator, Logistics & Purchasing Director, Head Counselor","left":[{"t":"Redesigned a decade old staff in training curriculum and program structure using Self-Determination Theory as the leadership framework.","k":["Drove a 67% year-over-year staff retention increase."]},{"t":"Built individualized development plans across the staff.","k":[]},{"t":"Led and mentored a team of 40 counselors and CITs across two seasons.","k":[]},{"t":"Provided training and mentorship to program staff, fostering creativity and teaching experience design principles to the next generation of camp leaders.","k":[]},{"t":"Led trainings throughout the season.","k":[]},{"t":"Facilitated change management within the campus system.","k":[]}],"right":[{"t":"Owned end-to-end campus operations — supply ordering, programming logistics, and daily activity flow.","k":[]},{"t":"Designed the day-to-day operations: the flow of activities, the materials they required, and turning the schedule into executable days.","k":[]},{"t":"Employed experience design principles to innovate on decades old traditions.","k":[]}],"links":[],"showDesc":true,"more":true},{"id":"delta","co":"Delta Air Lines × SCADpro","ti":"Project Manager","dt":"Nov 2019 – Mar 2020","desc":"Partnered with Delta Air Lines to turn thousands of obsolete beverage carts and cabinets into business models aligned with Delta's sustainability and brand goals.","left":[{"t":"Led a cross-cultural team of creatives from eight countries and nine disciplines in developing sustainable business models for the airline.","k":[]},{"t":"Managed budget, timelines, resources, and stakeholder relationships across the engagement.","k":[]},{"t":"Acted as the primary contact between client and team, presenting status updates and pitch decks regularly in corporate rooms, while communicating business needs to the creative team in the studio.","k":[]},{"t":"Trained creative studio team in the business model canvas and design thinking process, mapping every strategy through the canvas before client pitches.","k":[]}],"right":[{"t":"Architected a series of prioritization frameworks using matrices, business models, criteria canvases, and other design strategy tools that anchored the team's decision making in client adoption logic.","k":["Structured team goals into nine design criteria that anchored concept selection for the engagement."]},{"t":"Owned end-to-end solution development, from establishing decision criteria through translating insights into actionable business strategies.","k":[]}],"links":[],"showDesc":true,"more":true},{"id":"cc-sd","co":"Campus Carriers","ti":"Service Designer","dt":"Apr 2019 – Mar 2020","desc":"Designed a leadership development curriculum for students across seven partner universities, combining interactive skill building with competitively paid job experience.","left":[{"t":"Designed a leadership development curriculum for students across seven partner universities, combining interactive skill building with competitively paid job experience.","k":[]},{"t":"Owned end-to-end service development, from primary market research with residential life leaders to the educational design of the curriculum through offer design and pre-launch partnership preparations.","k":[]}],"right":[{"t":"Architected a multi-stakeholder (B2B2C) service structure spanning parents, students, and universities.","k":[]}],"links":[],"showDesc":false,"more":false},{"id":"cc-ops","co":"Campus Carriers","ti":"Operations Director","dt":"Jan 2017 – Apr 2019","desc":"Owned operations at the largest location of a regional university logistics startup, running a fleet of 20 trucks, a 100,000 square foot warehouse, and 200+ seasonal staff across six seasons.","left":[{"t":"Owned operations at the largest location of a regional university logistics startup, leading 200+ seasonal staff across six seasons.","k":[]},{"t":"Facilitated the seasonal staffing funnel across recruiting cycles, hiring and training 50 to 100 employees per year.","k":[]}],"right":[{"t":"Built the operational playbook that propagated across other partner university campuses, including recruiting, onboarding, training, scheduling, inventory, and safety as ways-of-working.","k":["Drove a 60% resource reduction by reforming the operational systems and organizational structure."]}],"links":[],"showDesc":true,"more":true},{"id":"film","co":"Freelance Film & Television","ti":"Lead Producer & Assistant Director","dt":"Jan 2013 – Mar 2019","desc":"Ran logistics and operations in the film and television industry for six years, primarily working in music videos, branded content, ads, and narratives, while also doing stints with Netflix, Bravo, and VH1. I ran a small studio as the Lead Producer and was a hired gun for other projects as an Assistant Director.","left":[{"t":"Built and led a multi-departmental production crew with ~95% project-to-project retention over six years.","k":["Identified underutilized talent, trained them up via on set mentor matching, and launched them via our divide and conquer strategy that allowed their mentors to become supporting talent to act as guardrails during growth.","Developed talent that were skilled in leading and following so that someone could lead on one project and follow on parallel projects, allowing us to dispatch up to four production teams in parallel."]},{"t":"Led multiple concurrent production teams through pre-production, production, and post-production across overlapping shoot windows.","k":[]},{"t":"Designed and led the production of a branded content short film across 30+ crew, 20+ talent, eight locations, and ten-plus external vendor partnerships.","k":[]},{"t":"Coordinated thousands of crew, cast, equipment, locations, resources, and vendor partners live on set, becoming the nexus for all information, decision making, and de-escalating.","k":[]}],"right":[{"t":"Designed and facilitated project management system at scale, ensuring projects came in on time and on budget while our crew worked on six projects at a time on average, often peaking between ten and twelve projects at once.","k":[]},{"t":"Visually mapped crew, cast, and equipment positioning for hundreds of scenes across 40 projects.","k":[]},{"t":"Pioneered digital production management environments for cross-functional production teams, replacing paper and physical whiteboard planning with Asana, Google Drive, Dropbox, Miro, Mural, and assorted process mapping softwares.","k":["Identified where crews were losing time, sourced the tools that fit those workflows, and led adoption in pre and post production and on set."]}],"links":[],"showDesc":true,"more":true}]};
+document.documentElement.classList.add('js');
+const $ = (s) => document.querySelector(s);
+const el = (tag, cls, text) => { const n = document.createElement(tag);
+  if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const L_LABEL = 'Leadership + Building a Team';
+const R_LABEL = 'Digital Enablement';
+const panel = $('#panel'), scrim = $('#scrim'), pbody = $('#p-body');
+let opener = null;
+
+function openPanel(btn,kicker,title,sub,dt,build){
+  opener = btn;
+  document.querySelectorAll('[aria-expanded="true"]').forEach((b)=>b.setAttribute('aria-expanded','false'));
+  if(btn) btn.setAttribute('aria-expanded','true');
+  $('#p-kicker').textContent = kicker; $('#p-title').textContent = title;
+  $('#p-sub').textContent = sub || ''; $('#p-dt').textContent = dt || '';
+  pbody.replaceChildren(); build(pbody); pbody.scrollTop = 0;
+  panel.hidden = false;
+  void panel.offsetWidth;
+  panel.classList.add('on'); scrim.classList.add('on');
+  document.body.classList.add('is-locked'); panel.focus();
+}
+function openCap(c,label,btn){
+  openPanel(btn,label,c.t,'','',(body)=>{
+    if(c.y) body.append(el('p','p-years',c.y));
+    c.b.split(/\n{2,}/).forEach((para)=>body.append(el('p','p-intro',para.trim())));
+  });
+}
+function closePanel(){
+  panel.classList.remove('on'); scrim.classList.remove('on');
+  document.body.classList.remove('is-locked');
+  document.querySelectorAll('[aria-expanded="true"]').forEach((b)=>b.setAttribute('aria-expanded','false'));
+  const back = opener; opener = null;
+  const done = ()=>{ panel.hidden = true; panel.removeEventListener('transitionend',done); };
+  panel.addEventListener('transitionend',done);
+  setTimeout(()=>{ if(!panel.classList.contains('on')) panel.hidden = true; },450);
+  if(back) back.focus();
+}
+$('#p-close').addEventListener('click',closePanel);
+scrim.addEventListener('click',closePanel);
+document.addEventListener('keydown',(e)=>{
+  if(!panel.classList.contains('on')) return;
+  if(e.key === 'Escape'){ e.preventDefault(); closePanel(); return; }
+  if(e.key !== 'Tab') return;
+  const f = panel.querySelectorAll('a[href], button:not([disabled])');
+  if(!f.length) return;
+  const first = f[0], last = f[f.length-1];
+  if(e.shiftKey && (document.activeElement === first || document.activeElement === panel)){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
+document.querySelectorAll('.cap').forEach((b)=>{ const [side,i] = b.dataset.cap.split(':');
+  const c = DATA.caps[side][+i];
+  b.addEventListener('click',()=>openCap(c, side === 'left' ? L_LABEL : R_LABEL, b)); });
+const ctx = $('#ctx-toggle'), band = $('#band');
+ctx.addEventListener('click',()=>{
+  const open = ctx.getAttribute('aria-expanded') === 'true';
+  ctx.setAttribute('aria-expanded', String(!open));
+  band.hidden = open;
+  ctx.textContent = open ? 'Show Career Through Lines' : 'Hide Career Through Lines';
+});
+</script>
+</body>
+</html>
